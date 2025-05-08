@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+if (php_sapi_name() !== 'cli') {
+    exit;
+}
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Sinan\Application;
+use Sinan\Command\Create\DefaultCommand as CreateCommand;
+
+$app = new Application();
+
+// Register the create:command command explicitly as it's a core command
+$app->add(new CreateCommand());
+
+// Allow project-level autoload if it exists
+if (file_exists(getcwd() . '/vendor/autoload.php') && getcwd() !== __DIR__) {
+    require_once getcwd() . '/vendor/autoload.php';
+}
+
+// Check for sinan.php configuration file in various locations
+$configLocations = [
+    getcwd() . '/sinan.php',
+    getcwd() . '/config/sinan.php',
+];
+
+foreach ($configLocations as $configFile) {
+    if (file_exists($configFile)) {
+        // Execute the sinan.php file which can register additional namespaces
+        $configureCallback = require $configFile;
+        if (is_callable($configureCallback)) {
+            $configureCallback($app);
+        }
+        break; // Only use the first config file found
+    }
+}
+
+$app->run(); 

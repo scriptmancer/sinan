@@ -1,0 +1,28 @@
+{
+    "name": "scriptmancer/sinan",
+    "version": "v0.9.5",
+    "description": "Sinan CLI tool for the Nazım framework, wrapping minicli/minicli.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gökhan SARIGÜL",
+            "email": "gsarigul84@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "nunomaduro/termwind": "^2.3",
+        "league/plates": "^3.6",
+        "symfony/console": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sinan\\": "src/",
+            "App\\": "app/"
+        }
+    },
+    "bin": [
+        "bin/sinan"
+    ]
+}

@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * Sinan CLI configuration file
+ * 
+ * This file is loaded by the Sinan CLI tool when run from your project.
+ * It can be placed in either:
+ * - /sinan.php (project root)
+ * - /config/sinan.php
+ * 
+ * It allows you to register additional command namespaces for auto-discovery.
+ * 
+ * @return callable A function that receives the Sinan\Application instance
+ */
+
+return function (\Sinan\Application $app) {
+    // Register commands from custom namespaces
+    // Example: Register commands from a package
+    // $app->registerNamespace('Vendor\\Package\\Commands', __DIR__ . '/vendor/vendor/package/src/Commands');
+    
+    // Example: Register commands from your project
+    // $app->registerNamespace('App\\CustomCommands', __DIR__ . '/app/CustomCommands');
+    
+    // You can register as many namespaces as you need
+}; 

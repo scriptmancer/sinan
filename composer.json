@@ -1,7 +1,7 @@
 {
     "name": "scriptmancer/sinan",
     "version": "v0.9.5",
-    "description": "Sinan CLI tool for the Nazım framework, wrapping minicli/minicli.",
+    "description": "Sinan CLI tool for the Nazım framework, wrapping symfony/console.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -12,8 +12,8 @@
     ],
     "require": {
         "php": ">=8.2",
-        "nunomaduro/termwind": "^2.3",
-        "symfony/console": "^7.2"
+        "symfony/console": "^7.2",
+        "league/climate": "^3.10"
     },
     "autoload": {
         "psr-4": {

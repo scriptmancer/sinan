@@ -119,19 +119,40 @@ class CustomCommand extends Command
 }
 ```
 
-### Using Termwind
+### Using League/CLImate
 
-Use Termwind for beautiful console output:
+Sinan CLI uses [League/CLImate](https://github.com/thephpleague/climate) for beautiful, expressive CLI output.
 
+#### Installation
+CLImate is installed automatically as a dependency. No extra steps needed.
+
+#### Example Usage
 ```php
-use function Termwind\{render};
+use League\CLImate\CLImate;
 
-render(<<<'HTML'
-    <div class="px-1 bg-blue-500 text-white font-bold">
-        Hello from Termwind!
-    </div>
-HTML);
+$climate = new CLImate();
+$climate->bold()->backgroundBlue()->white()->out(' Sinan CLI ');
+$climate->out('A modern, extensible CLI for the Nazım framework');
+$climate->green('Version: v0.9.5');
+$climate->yellow('Author: Gökhan SARIGÜL <gsarigul84@gmail.com>');
+$climate->table([
+    ['Feature' => 'Colors', 'Demo' => 'green, yellow, red, blue'],
+    ['Feature' => 'Bold', 'Demo' => 'bold()'],
+    ['Feature' => 'Backgrounds', 'Demo' => 'backgroundBlue()'],
+    ['Feature' => 'Tables', 'Demo' => 'table()'],
+]);
 ```
+
+#### Showcase Command
+Run the following to see a full demonstration of CLImate features:
+
+```bash
+./sinan climate:showcase
+```
+
+This will display colored messages, tables, progress bars, input prompts, and more.
+
+See the [League/CLImate documentation](https://climate.thephpleague.com/) for all available features.
 
 ## License
 

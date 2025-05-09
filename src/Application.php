@@ -1,6 +1,6 @@
 <?php
 
-namespace Sinan;
+namespace Scriptmancer\Sinan;
 
 use Symfony\Component\Console\Application as ConsoleApplication;
 use RecursiveDirectoryIterator;
@@ -13,14 +13,14 @@ class Application extends ConsoleApplication
      * @var array<string,string> List of base command namespaces to auto-discover
      */
     protected array $commandNamespaces = [
-        'Sinan\\Command' => __DIR__ . '/Command',
+        'Scriptmancer\\Sinan\\Command' => __DIR__ . '/Command',
     ];
 
     public function __construct()
     {
         parent::__construct('Sinan', 'v0.9.5');
         
-        // Register commands from Sinan\Command namespace
+        // Register commands from Scriptmancer\Sinan\Command namespace
         $this->registerCommands();
         
         // If in a project context, register commands from App\Commands namespace

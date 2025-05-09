@@ -11,6 +11,7 @@ use function Termwind\{render, ask, terminal};
 #[AsCommand(
     name: 'app:termwind-showcase',
     description: 'Showcase of Termwind capabilities',
+    hidden: true
 )]
 class TermwindShowcaseCommand extends Command
 {

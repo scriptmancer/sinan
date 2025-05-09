@@ -13,12 +13,11 @@
     "require": {
         "php": ">=8.2",
         "nunomaduro/termwind": "^2.3",
-        "league/plates": "^3.6",
         "symfony/console": "^7.2"
     },
     "autoload": {
         "psr-4": {
-            "Sinan\\": "src/",
+            "Scriptmancer\\Sinan\\": "src/",
             "App\\": "app/"
         }
     },

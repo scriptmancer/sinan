@@ -7,8 +7,8 @@ if (php_sapi_name() !== 'cli') {
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Sinan\Application;
-use Sinan\Command\Create\DefaultCommand as CreateCommand;
+use Scriptmancer\Sinan\Application;
+use Scriptmancer\Sinan\Command\Create\DefaultCommand as CreateCommand;
 
 $app = new Application();
 

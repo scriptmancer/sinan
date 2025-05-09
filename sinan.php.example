@@ -13,13 +13,17 @@
  * @return callable A function that receives the Sinan\Application instance
  */
 
-return function (\Sinan\Application $app) {
-    // Register commands from custom namespaces
-    // Example: Register commands from a package
-    // $app->registerNamespace('Vendor\\Package\\Commands', __DIR__ . '/vendor/vendor/package/src/Commands');
+return [
+
+    // Namespace for generated commands
+    'command_namespace' => 'App\\Commands',
     
-    // Example: Register commands from your project
-    // $app->registerNamespace('App\\CustomCommands', __DIR__ . '/app/CustomCommands');
-    
-    // You can register as many namespaces as you need
-}; 
+    // Directory for generated commands
+    'command_namespace' => 'App\\Commands',
+    // Additional namespaces to register for command discovery
+    'extra_command_namespaces' => [
+        ['namespace' => 'App\\Commands', 'path' => __DIR__ . '/../app/Commands'],
+        // Add more as needed
+        // ['namespace' => 'Other\\Commands', 'path' => __DIR__ . '/../other/Commands'],
+    ],
+];

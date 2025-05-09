@@ -10,15 +10,7 @@ require __DIR__ . '/vendor/autoload.php';
 use Scriptmancer\Sinan\Application;
 use Scriptmancer\Sinan\Command\Create\DefaultCommand as CreateCommand;
 
-$app = new Application();
-
-// Register the create:command command explicitly as it's a core command
-$app->add(new CreateCommand());
-
-// Allow project-level autoload if it exists
-if (file_exists(getcwd() . '/vendor/autoload.php') && getcwd() !== __DIR__) {
-    require_once getcwd() . '/vendor/autoload.php';
-}
+$config = [];
 
 // Check for sinan.php configuration file in various locations
 $configLocations = [
@@ -28,13 +20,39 @@ $configLocations = [
 
 foreach ($configLocations as $configFile) {
     if (file_exists($configFile)) {
-        // Execute the sinan.php file which can register additional namespaces
-        $configureCallback = require $configFile;
-        if (is_callable($configureCallback)) {
-            $configureCallback($app);
+        $result = require $configFile;
+        if (is_array($result)) {
+            $config = $result;
         }
-        break; // Only use the first config file found
+        break;
     }
 }
 
-$app->run(); 
+$app = new Application($config);
+
+
+// Register the create:command command explicitly as it's a core command
+$app->add(new CreateCommand());
+
+// Allow project-level autoload if it exists
+if (file_exists(getcwd() . '/vendor/autoload.php') && getcwd() !== __DIR__) {
+    require_once getcwd() . '/vendor/autoload.php';
+}
+
+// Always register the default namespace for discovery
+$app->registerNamespace('Scriptmancer\\Sinan\\Command', __DIR__ . '/src/Command');
+
+// Register any additional namespaces from config for discovery
+if (!empty($config['extra_command_namespaces'])) {
+    foreach ($config['extra_command_namespaces'] as $ns) {
+        if (!empty($ns['namespace']) && !empty($ns['path'])) {
+            $app->registerNamespace($ns['namespace'], $ns['path']);
+        }
+    }
+}
+
+
+// Register all commands from all registered namespaces
+$app->registerCommands();
+
+$app->run();

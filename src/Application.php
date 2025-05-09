@@ -10,21 +10,24 @@ use RegexIterator;
 class Application extends ConsoleApplication
 {
     /**
+     * @var array Configuration array loaded from sinan.php
+     */
+    protected array $config = [];
+    /**
      * @var array<string,string> List of base command namespaces to auto-discover
      */
     protected array $commandNamespaces = [
         'Scriptmancer\\Sinan\\Command' => __DIR__ . '/Command',
     ];
 
-    public function __construct()
+    public function __construct(array $config = [])
     {
         parent::__construct('Sinan', 'v0.9.5');
-        
+        $this->config = $config;
         // Register commands from Scriptmancer\Sinan\Command namespace
         $this->registerCommands();
-        
         // If in a project context, register commands from App\Commands namespace
-        $this->registerAppCommands();
+        // $this->registerAppCommands();
     }
     
     /**
@@ -52,7 +55,7 @@ class Application extends ConsoleApplication
     /**
      * Register commands from App\Commands namespace if we're in a project context
      */
-    protected function registerAppCommands(): void
+   /* protected function registerAppCommands(): void
     {
         // Check if we're in a project context by looking for app/Commands directory
         $appCommandsDir = getcwd() . '/app/Commands';
@@ -61,7 +64,7 @@ class Application extends ConsoleApplication
             $this->registerNamespace('App\\Commands', $appCommandsDir);
             $this->registerCommandsFromNamespace('App\\Commands', $appCommandsDir);
         }
-    }
+    } */
     
     /**
      * Register all commands found in a specific namespace directory
@@ -144,4 +147,19 @@ class Application extends ConsoleApplication
             preg_match('/^\s*interface\s+/im', $content) ||
             preg_match('/^\s*trait\s+/im', $content);
     }
+
+    /**
+     * Get config value by key, or the whole config array.
+     * @param string|null $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getConfig(?string $key = null, $default = null)
+    {
+        if ($key === null) {
+            return $this->config;
+        }
+        return $this->config[$key] ?? $default;
+    }
 }
+

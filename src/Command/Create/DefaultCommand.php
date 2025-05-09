@@ -22,19 +22,27 @@ class DefaultCommand extends Command
     {
         $path = $input->getArgument('path');
         
+        // Get config from Application
+        $app = $this->getApplication();
+        $config = method_exists($app, 'getConfig') ? $app->getConfig() : [];
+
+        // Set defaults if not set in config
+        $namespaceBase = $config['command_namespace'] ?? 'Scriptmancer\\Sinan\\Command';
+        $directoryBase = $config['command_directory'] ?? (getcwd() . '/src/Command');
+
         // Generate namespace, class name and signature
-        $namespace = Support::generateNamespace($path);
+        $namespace = Support::generateNamespace($path, $namespaceBase);
         $className = Support::generateClassName($path);
         $signature = Support::generateCommandSignature($path);
         
         // Get and replace placeholders in the stub
         $stub = Support::getStub('create-command');
-        $stub = str_replace('<NamespacePrefix>', $namespace, $stub);
+        $stub = str_replace('<Namespace>', $namespace, $stub);
         $stub = str_replace('<CommandName>', $className, $stub);
         $stub = str_replace('<Signature>', $signature, $stub);
         
         // Create the command file
-        $commandFilePath = Support::generateCommandFilePath($path);
+        $commandFilePath = Support::generateCommandFilePath($path, $directoryBase);
         
         // Create directory if it doesn't exist
         $directory = dirname($commandFilePath);

@@ -9,7 +9,7 @@ class Support
         return file_get_contents(__DIR__ . '/../stubs/' . $name . '.stub');
     }
 
-    public static function generateNamespace(string $path): string
+    public static function generateNamespace(string $path, ?string $namespaceOverride = null): string
     {
         $parts = explode('/', $path);
         if (count($parts) > 1) {
@@ -17,6 +17,10 @@ class Support
             array_pop($parts);
         }
         $namespaceArray = array_map('ucfirst', $parts);
+        if ($namespaceOverride) {
+            // Append the subdirectory parts to the base namespace
+            return rtrim($namespaceOverride, '\\') . (count($namespaceArray) ? '\\' . implode('\\', $namespaceArray) : '');
+        }
         return implode('\\', $namespaceArray);
     }
 
@@ -49,18 +53,19 @@ class Support
         $signature = strtolower(str_replace('/', '-', $path));
         return 'app:' . $signature;
     }
-    public static function generateCommandFilePath(string $path): string
+    public static function generateCommandFilePath(string $path, ?string $directoryOverride = null): string
     {
         $parts = explode('/', $path);
+        $baseDir = $directoryOverride ? rtrim($directoryOverride, '/\\') : getcwd() . '/src/Command';
 
         if (count($parts) === 1) {
             // For "./sinan create:command Hello" format
-            return getcwd() . '/src/Command/' . ucfirst($parts[0]) . '/DefaultCommand.php';
+            return $baseDir . '/' . ucfirst($parts[0]) . '/DefaultCommand.php';
         } else {
             // For "./sinan create:command Hello/World" or deeper
             $lastPart = array_pop($parts);
             $directory = implode('/', array_map('ucfirst', $parts));
-            return getcwd() . '/src/Command/' . $directory . '/' . ucfirst($lastPart) . 'Command.php';
+            return $baseDir . '/' . $directory . '/' . ucfirst($lastPart) . 'Command.php';
         }
     }
 

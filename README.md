@@ -71,15 +71,23 @@ Create a `sinan.php` or `config/sinan.php` file in your project root:
 
 ```php
 <?php
+return [
+    // Directory where new commands will be generated
+    'command_directory' => __DIR__ . '/../app/Commands',
 
-return function (\Sinan\Application $app) {
-    // Register commands from custom namespaces
-    $app->registerNamespace('Vendor\\Package\\Commands', __DIR__ . '/vendor/vendor/package/src/Commands');
-    
-    // Register commands from your project
-    $app->registerNamespace('App\\CustomCommands', __DIR__ . '/app/CustomCommands');
-};
+    // Namespace for generated commands
+    'command_namespace' => 'App\\Commands',
+
+    // Additional namespaces to register for command discovery
+    'extra_command_namespaces' => [
+        ['namespace' => 'App\\Commands', 'path' => __DIR__ . '/../app/Commands'],
+        // Example: ['namespace' => 'Other\\Commands', 'path' => __DIR__ . '/../other/Commands'],
+    ],
+];
 ```
+
+- If omitted, Sinan defaults to `src/Command` and `Scriptmancer\Sinan\Command` for generation.
+- You can register multiple command packs by adding them to `extra_command_namespaces`.
 
 ## Extending Sinan
 
